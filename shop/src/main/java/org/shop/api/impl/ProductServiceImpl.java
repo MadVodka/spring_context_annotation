@@ -1,10 +1,10 @@
 package org.shop.api.impl;
 
-import java.util.List;
-
 import org.shop.api.ProductService;
 import org.shop.data.Product;
 import org.shop.repository.ProductRepository;
+
+import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
 

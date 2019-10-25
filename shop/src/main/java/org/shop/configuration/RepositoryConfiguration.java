@@ -3,6 +3,7 @@ package org.shop.configuration;
 import org.shop.repository.*;
 import org.shop.repository.factory.UserRepositoryFactory;
 import org.shop.repository.map.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,9 +14,12 @@ public class RepositoryConfiguration {
         return new ItemMapRepository();
     }
 
-    @Bean
-    public OrderRepository orderRepository() {
-        return new OrderMapRepository();
+    @Bean()
+    @Value("${repository.order-repository.initial-sequence}")
+    public OrderRepository orderRepository(long initialSequence) {
+        OrderMapRepository orderMapRepository = new OrderMapRepository();
+        orderMapRepository.setSequence(initialSequence);
+        return orderMapRepository;
     }
 
     @Bean
@@ -34,8 +38,12 @@ public class RepositoryConfiguration {
     }
 
     @Bean
-    public UserRepository userRepository() {
-        UserRepositoryFactory userRepositoryFactory = new UserRepositoryFactory();
+    public UserRepositoryFactory userRepositoryFactory() {
+        return new UserRepositoryFactory();
+    }
+
+    @Bean()
+    public UserRepository userRepository(UserRepositoryFactory userRepositoryFactory) {
         return userRepositoryFactory.createUserRepository();
     }
 }

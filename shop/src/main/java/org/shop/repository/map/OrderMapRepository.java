@@ -1,14 +1,14 @@
 package org.shop.repository.map;
 
-import java.util.List;
-
 import org.apache.commons.collections.Predicate;
 import org.shop.data.Order;
 import org.shop.repository.OrderRepository;
 
+import java.util.List;
+
 /**
  * The Class OrderMapRepository.
- * 
+ *
  * @author Dzmitry_Naskou
  */
 public class OrderMapRepository extends AbstractMapRepository<Order> implements OrderRepository {
@@ -16,7 +16,7 @@ public class OrderMapRepository extends AbstractMapRepository<Order> implements 
     public void setSequence(long sequence) {
         super.sequence = sequence;
     }
-    
+
     /* (non-Javadoc)
      * @see org.shop.repository.OrderRepository#getOrderById(java.lang.Long)
      */
@@ -48,13 +48,15 @@ public class OrderMapRepository extends AbstractMapRepository<Order> implements 
     public List<Order> getOrdersByUserId(Long userId) {
         return select(new OrderByUserPredicate(userId));
     }
-    
+
     /**
      * The Class OrderByUserPredicate.
      */
     private class OrderByUserPredicate implements Predicate {
-        
-        /** The user id. */
+
+        /**
+         * The user id.
+         */
         private Long userId;
 
         /**
@@ -73,11 +75,11 @@ public class OrderMapRepository extends AbstractMapRepository<Order> implements 
         @Override
         public boolean evaluate(Object input) {
             if (input instanceof Order) {
-                Order order = (Order)input;
-                
+                Order order = (Order) input;
+
                 return userId.equals(order.getUser().getId());
             }
-            
+
             return false;
         }
     }
