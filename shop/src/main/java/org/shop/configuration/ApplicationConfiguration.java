@@ -1,13 +1,12 @@
 package org.shop.configuration;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 
 @Configuration
 @Import({InitializerConfiguration.class, RepositoryConfiguration.class, ServiceConfiguration.class})
 @PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = "org.shop.bean_post_processors")
+@PropertySource("classpath:log4j.properties")
+@ComponentScan(basePackages = {"org.shop.bean_post_processors", "org.shop.aspects"})
+@EnableAspectJAutoProxy
 public class ApplicationConfiguration {
 }
