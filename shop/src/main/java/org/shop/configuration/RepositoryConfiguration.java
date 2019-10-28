@@ -14,7 +14,7 @@ public class RepositoryConfiguration {
         return new ItemMapRepository();
     }
 
-    @Bean()
+    @Bean
     @Value("${repository.order-repository.initial-sequence}")
     public OrderRepository orderRepository(long initialSequence) {
         OrderMapRepository orderMapRepository = new OrderMapRepository();
@@ -42,7 +42,7 @@ public class RepositoryConfiguration {
         return new UserRepositoryFactory();
     }
 
-    @Bean()
+    @Bean
     public UserRepository userRepository(UserRepositoryFactory userRepositoryFactory) {
         return userRepositoryFactory.createUserRepository();
     }

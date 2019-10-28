@@ -1,7 +1,6 @@
 package org.shop.bean_post_processors;
 
 import org.shop.annotations.InjectRandomInt;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
@@ -11,16 +10,18 @@ import java.util.Random;
 
 @Component
 public class InjectRandomIntAnnotationBeanPostProcessor implements BeanPostProcessor {
+    private Random random = new Random();
+
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) {
         Class<?> beanClass = bean.getClass();
         Field[] fields = beanClass.getDeclaredFields();
         for (Field field : fields) {
             InjectRandomInt annotation = field.getAnnotation(InjectRandomInt.class);
-            if (annotation != null && field.getType().equals(int.class)) {
+            boolean isIntOrLong = field.getType().equals(int.class) || field.getType().equals(long.class);
+            if (annotation != null && isIntOrLong) {
                 int min = annotation.minValue();
                 int max = annotation.maxValue();
-                Random random = new Random();
 
                 int randomInt = min + random.nextInt(max - min);
                 field.setAccessible(true);
