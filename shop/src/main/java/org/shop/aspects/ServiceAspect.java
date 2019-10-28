@@ -1,32 +1,45 @@
 package org.shop.aspects;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Aspect
 @Component
 public class ServiceAspect {
-    private static Logger logger = LoggerFactory.getLogger(ServiceAspect.class);
+    @Autowired
+    @Qualifier("applicationLogger")
+    private Logger logger;
 
-    @Pointcut("execution(public * org.shop.api.*.get*(..))")
-    public void callGetMethods() {
+    @Pointcut("within(org.shop.api.*)")
+    public void serviceLocation() {}
+
+    @Pointcut("within(org.shop.repository.*) && !within(is(FinalType)")
+    public void repositoryLocation() {}
+
+    @Pointcut("execution(public !void org.shop.api.*.*(..))")
+    public void callServiceMethodsWithReturning() {
     }
 
-    @Before("callGetMethods()")
-    public void beforeCallGetMethods(JoinPoint joinPoint) {
-        logger.info("Starting operations on {}", joinPoint.getSignature().getName());
+    @Pointcut("execution(public void org.shop.api.*.*(..))")
+    public void callServiceMethodsWithVoid() {
     }
 
-    @AfterReturning(pointcut = "callGetMethods()", returning = "objects")
-    public void afterReturningCallGetMethods(JoinPoint joinPoint, List objects) {
-        logger.info("Result of {} is: {}", joinPoint.getSignature().getName(), objects);
+    @Before("callServiceMethodsWithReturning() || callServiceMethodsWithVoid()")
+    public void beforeCallServiceMethods(JoinPoint joinPoint) {
+        logger.info("Start of {}, arguments {}", joinPoint.getSignature(), joinPoint.getArgs());
+    }
+
+    @After("callServiceMethodsWithVoid()")
+    public void afterCallServiceMethods(JoinPoint joinPoint) {
+        logger.info("End of {}", joinPoint.getSignature());
+    }
+
+    @AfterReturning(pointcut = "callServiceMethodsWithReturning()", returning = "object")
+    public void afterReturningCallServiceMethods(JoinPoint joinPoint, Object object) {
+        logger.info("Result of {} is: {}", joinPoint.getSignature(), object);
     }
 }
