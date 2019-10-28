@@ -1,5 +1,6 @@
 package org.shop;
 
+import org.shop.annotations.InjectRandomInt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * The main Data Initializer util class.
  */
 public class DataInitializer {
+    @InjectRandomInt(minValue = 1, maxValue = 10)
+    private int version;
 
     /** The seller initializer. */
     @Autowired
@@ -29,6 +32,7 @@ public class DataInitializer {
      * Inits the data.
      */
     public void initData() {
+        System.out.printf("Data initializer version %d%n", version);
         sellerInitializer.initSellers();
         userInitializer.initUsers();
         productInitializer.initProducts();
