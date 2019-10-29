@@ -15,10 +15,7 @@ public class ServiceAspect {
     private Logger logger;
 
     @Pointcut("within(org.shop.api.*)")
-    public void serviceLocation() {}
-
-    @Pointcut("within(org.shop.repository.*) && !within(is(FinalType)")
-    public void repositoryLocation() {}
+    public void inServiceLayer() {}
 
     @Pointcut("execution(public !void org.shop.api.*.*(..))")
     public void callServiceMethodsWithReturning() {
