@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ServiceAspect {
-    @Autowired
-    @Qualifier("applicationLogger")
     private Logger logger;
+
+    public ServiceAspect(Logger logger) {
+        this.logger = logger;
+    }
 
     @Pointcut("within(org.shop.api.*)")
     public void inServiceLayer() {}

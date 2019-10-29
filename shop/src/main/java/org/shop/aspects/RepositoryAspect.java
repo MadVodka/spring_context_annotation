@@ -3,16 +3,16 @@ package org.shop.aspects;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class RepositoryAspect {
-    @Autowired
-    @Qualifier("applicationLogger")
     private Logger logger;
+
+    public RepositoryAspect(Logger logger) {
+        this.logger = logger;
+    }
 
     @Pointcut("execution(public !void org.shop.repository.*.*(..)) && !within(is(FinalType))")
     public void callRepositoryMethodsWithReturning() {

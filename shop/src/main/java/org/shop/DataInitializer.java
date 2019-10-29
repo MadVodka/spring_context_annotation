@@ -32,7 +32,7 @@ public class DataInitializer {
      * Inits the data.
      */
     public void initData() {
-        System.out.printf("Data initializer version %d%n", version);
+        System.out.printf("Data initializer version " + version + "\n");
         sellerInitializer.initSellers();
         userInitializer.initUsers();
         productInitializer.initProducts();
